@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Relogio Igreja</title>
+    <link href="css/normalize.min.css" type="text/css" />
+    <style type="text/css">
+        @font-face {
+            font-family: 'clockFont';
+            src: url('./font/alarm_clock.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            display: grid;
+            height: 100%;
+            place-items: center;
+            background: #000;
+            font-family: clockFont;
+        }
+
+        :root {
+
+            /* RESPONSIVE DATA */
+
+            --inicial-clock:30vw;
+            --clock-border-area-w:var(--inicial-clock);
+            --clock-border-area-h:calc(var(--clock-border-area-w) / 3.333);
+            --clock-internal-area-w:calc(var(--inicial-clock) - 1vw);
+            --clock-internal-area-h:calc(var(--clock-internal-area-w) / 3.733);
+            --font-size: calc(var(--inicial-clock) - 25vw);
+            --font-line: calc(var(--inicial-clock) - 20vw);
+        }
+
+        .wrapper2 {
+            width: var(--clock-border-area-w);
+            height: var(--clock-border-area-h);
+            position: relative;
+            background: linear-gradient(135deg, #00F260, #02b6a0, #0575E6);
+            border-radius: 11px;
+            cursor: none;
+            animation: animate 10s linear infinite;
+        }
+
+        .wrapper2 .display2 {
+            z-index: 999;
+            height: var(--clock-internal-area-h);
+            width: var(--clock-internal-area-w);
+            background: #1b1b1b;
+            border-radius: 6px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .wrapper2 .display2,
+        .wrapper2 span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .display2 #time {
+            line-height: var(--font-line);
+            color: #fff;
+            font-size: var(--font-size);
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00F260, #02b6a0, #0575E6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .display2 #time::before {
+            content: "88:88:88";
+            line-height: var(--font-line);
+            position: absolute;
+            color: #fff;
+            mix-blend-mode: color-dodge;
+            font-size: var(--font-size);
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00f2601f, #02b6a01f, #0575E61f);
+            -webkit-background-clip: text;
+        }
+
+        .align-area{ /*500 * 140*/
+            width: 100%;
+            padding: 12px;
+        }
+
+        @keyframes animate {
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .wrapper2 span {
+            /*height: 100%;*/
+            /*width: 100%;*/
+            /*border-radius: 10px;*/
+            /*background: inherit;*/
+        }
+
+        .wrapper2 span:first-child {
+            filter: blur(30px);
+        }
+
+        .wrapper2 span:last-child {
+            filter: blur(108px);
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="align-area">
+    <div class="wrapper2">
+        <div class="display2">
+            <div id="time"></div>
+        </div>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<script>
+    setInterval(() => {
+        const time = document.querySelector(".display2 #time");
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        let day_night = "AM";
+        if (hours > 24) {
+            day_night = "PM";
+            hours = hours - 24;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        time.textContent = hours + ":" + minutes + ":" + seconds + " "/*+ day_night*/;
+    });
+
+
+    time.addEventListener("click", function() {
+        toggleFullScreen();
+    });
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement &&    // alternative standard method
+            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

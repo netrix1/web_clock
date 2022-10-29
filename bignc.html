@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Relogio Igreja</title>
+    <link href="css/normalize.min.css" type="text/css" />
+    <style type="text/css">
+        @font-face {
+            font-family: 'clockFont';
+            src: url('./font/alarm_clock.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            display: grid;
+            height: 100%;
+            place-items: center;
+            background: #000;
+            font-family: clockFont;
+        }
+
+        :root {
+
+            /* RESPONSIVE DATA */
+
+            --geral: 34vw;
+            --digitos:calc(var(--geral) * 0.4);
+            --digitos_line:calc(var(--geral) * 0.34);
+            --metade_line:calc(var(--digitos_line) / -2.2);
+            --caixa_digito_w:calc(var(--geral) * 1.4);
+            --caixa_digito_h:calc(var(--geral) * 0.3);
+            --caixa_cor_w:calc(var(--geral) * 2.1);
+            --caixa_cor_h:calc(var(--geral) * 0.6);
+            --caixa_cinza_w:calc(var(--geral) * 2.02);
+            --caixa_cinza_h:calc(var(--geral) * 0.52);
+        }
+
+        .cores {
+            width: var(--caixa_cor_w);
+            height: var(--caixa_cor_h);
+            position: relative;
+            background: linear-gradient(135deg, #00F260, #02b6a0, #0575E6);
+            border-radius: 11px;
+            cursor: none;
+            /*animation: animate 10s linear infinite;*/
+        }
+
+        .cores .cinza {
+            z-index: 999;
+            height: var(--caixa_cinza_h);
+            width: var(--caixa_cinza_w);
+            background: #1b1b1b;
+            border-radius: 6px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .cores .cinza,
+        .cores span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /*@keyframes animate {*/
+        /*    100% {*/
+        /*        filter: hue-rotate(360deg);*/
+        /*    }*/
+        /*}*/
+
+        .cores span {
+            height: 100%;
+            width: 100%;
+            border-radius: 10px;
+            background: inherit;
+        }
+
+        .cores span:last-child {
+            filter: blur(27px);
+            opacity: 0.5;
+        }
+
+        .cores .cinza #relogio{
+            line-height: var(--digitos_line);
+            font-size: var(--digitos);
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00F260, #02b6a0, #0575E6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: #0000;
+            position: inherit;
+        }
+
+        .cores .cinza #relogio:after {
+            content: "88:88:88";
+            line-height: var(--digitos_line);
+            top: calc(var(--digitos_line)-50%);
+            mix-blend-mode: color-dodge;
+            font-size: var(--digitos);
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00f2601f, #02b6a01f, #0575E61f);
+            -webkit-background-clip: text;
+            /*top: var(--metade_line);*/
+            width: var(--caixa_digito_w);
+            height: var(--caixa_digito_h);
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+
+        .alinha{
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="alinha">
+    <div class="cores">
+        <div class="cinza">
+            <div id="relogio"></div>
+        </div>
+        <span></span>
+    </div>
+</div>
+
+<script>
+    setInterval(() => {
+        const time = document.querySelector(".cinza #relogio");
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        let day_night = "AM";
+        if (hours > 24) {
+            day_night = "PM";
+            hours = hours - 24;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        time.textContent = hours + ":" + minutes + ":" + seconds + " "/*+ day_night*/;
+    });
+
+
+    relogio.addEventListener("click", function() {
+        toggleFullScreen();
+    });
+
+    /**
+     * Função Retirada de
+     * https://stackoverflow.com/questions/21280966/toggle-fullscreen-exit
+     */
+    function toggleFullScreen() {
+        if (!document.fullscreenElement &&    // alternative standard method
+            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }
+
+    /**
+     * Função Retirada de
+     * https://www.linhadecomando.com/javascript/javascript-recarregar-uma-pagina-em-horario-especifico
+     */
+    // função que fará o refresh na página
+    function recarregarPagina(){
+        // intancio Date()
+        var date = new Date();
+        // condição que verifica se é a hora e minuto correto
+        // se for executa a ação (01:50)
+        if(date.getHours() === 01 && date.getMinutes() === 50){
+            // alert("Recarregando");
+            // recarrega a URL atual
+            location.reload();
+        }
+    }
+    // a cada 60.000s = 1min chamo a função
+    setInterval( function(){ recarregarPagina(); } , 1000*60);
+    // chamada da função
+    recarregarPagina();
+</script>
+
+</body>
+</html>

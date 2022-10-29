@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Relogio Igreja</title>
+    <link href="css/normalize.min.css" type="text/css" />
+    <style type="text/css">
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            display: grid;
+            height: 100%;
+            place-items: center;
+            background: #000;
+            font-family: clockFont;
+        }
+
+        :root {
+            /* RESPONSIVE DATA */
+            --inicial-logo:30vw;
+
+            --logo-color-area-w:var(--inicial-logo);
+            --logo-color-area-h:var(--inicial-logo);
+
+            --logo-img:calc(var(--inicial-logo) + 2vw);
+        }
+
+        @keyframes animate {
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .logo-area {
+        }
+
+        .logo_igreja_img{
+            width: var(--logo-img);
+            z-index: 2;
+            /*position: absolute;*/
+            /*top: 0px;*/
+            /*right: 50%;*/
+            /*left: 50%;*/
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+        }
+
+        .back_color_logo {
+            width: var(--logo-color-area-w);
+            height: var(--logo-color-area-h);
+            background: linear-gradient(225deg, #00F260, #02b6a0, #0575E6);
+            border-radius: 50%;
+            z-index: 1;
+            animation: animate 30s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+<div class="logo-area">
+    <img class="logo_igreja_img" src="./img/modern_logo.png">
+    <div class="back_color_logo"></div>
+</div>
+
+</body>
+</html>
